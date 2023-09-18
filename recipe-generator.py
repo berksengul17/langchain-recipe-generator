@@ -1,5 +1,6 @@
 import os
 import tempfile
+from dotenv import load_dotenv
 
 import openai
 from elevenlabs import set_api_key
@@ -12,8 +13,10 @@ from langchain.chains import LLMChain
 import streamlit as st
 from audiorecorder import audiorecorder
 
-set_api_key(os.environ['ELEVEN_LABS_API'])
-openai.api_key = os.environ["OPENAI_API_KEY"]
+load_dotenv()
+
+set_api_key(os.environ['ELEVEN_LABS_API_KEY'])
+openai.api_key = os.environ['OPENAI_API_KEY']
 
 def transcribe_audio(audio_bytes):
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio:
@@ -33,8 +36,7 @@ meal_template = PromptTemplate(
                 """,
 )
 
-# llm = OpenAI(temperature=0.9)
-llm = ChatOpenAI(model_name="gpt-4", temperature=0.9)
+llm = OpenAI(temperature=0.9)
 
 meal_chain = LLMChain(
     llm=llm,
